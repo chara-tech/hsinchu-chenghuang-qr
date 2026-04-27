@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>新竹都城隍廟 — QR Code 導覽整合提案</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:       #0b0b0b;
+  --surface:  #212121;
+  --border:   #353535;
+  --border-s: #212121;
+  --text:     #ffffff;
+  --text-2:   #b9b9b9;
+  --text-3:   #797979;
+  --cta:      #f36458;
+  --blue:     #0052ef;
+  --gap:      96px;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Space Grotesk', 'Noto Sans TC', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Header ─────────────────────────── */
+.header {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  height: 44px;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 32px;
+  background: rgba(11,11,11,.88);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border-s);
+}
+.header-logo {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px; font-weight: 500;
+  letter-spacing: .06em; text-transform: uppercase;
+  color: var(--text-3);
+}
+.header-date {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px; color: var(--text-3);
+}
+
+.progress-bar {
+  position: fixed; top: 44px; left: 0; height: 1px;
+  background: var(--cta); width: 0%;
+  transition: width .08s; z-index: 101;
+}
+
+/* ── Hero ───────────────────────────── */
+.hero {
+  min-height: 100vh;
+  display: flex; flex-direction: column; justify-content: flex-end;
+  padding: 120px 64px 80px;
+  border-bottom: 1px solid var(--border-s);
+}
+.hero-eyebrow {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px; font-weight: 500; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--cta);
+  margin-bottom: 32px;
+}
+.hero h1 {
+  font-size: clamp(48px, 7vw, 96px);
+  font-weight: 300; line-height: 1.05;
+  letter-spacing: -0.04em;
+  max-width: 900px;
+}
+.hero h1 em {
+  font-style: normal; font-weight: 600;
+  display: block; color: var(--text);
+}
+.hero-sub {
+  margin-top: 40px;
+  font-size: 16px; color: var(--text-2); line-height: 1.7;
+  letter-spacing: -0.01em;
+}
+.hero-to {
+  margin-top: 64px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px; color: var(--text-3); letter-spacing: .1em;
+}
+.hero-scroll {
+  margin-top: 48px;
+  display: flex; align-items: center; gap: 12px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px; letter-spacing: .16em;
+  text-transform: uppercase; color: var(--text-3);
+}
+.hero-scroll::after {
+  content: ''; width: 1px; height: 32px;
+  background: var(--text-3); opacity: .4;
+  animation: pulse 2s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%,100% { opacity:.2; } 50% { opacity:.6; }
+}
+
+/* ── Section wrapper ────────────────── */
+.section {
+  max-width: 1280px; margin: 0 auto;
+  padding: var(--gap) 64px;
+}
+.section + .section { padding-top: 0; }
+
+.section-meta {
+  display: flex; align-items: center; gap: 16px;
+  margin-bottom: 48px;
+}
+.section-tag {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px; font-weight: 500; letter-spacing: .14em;
+  text-transform: uppercase; color: var(--text-3);
+}
+.section-rule {
+  flex: 1; height: 1px; background: var(--border-s); max-width: 48px;
+}
+h2 {
+  font-size: clamp(28px, 3vw, 38px); font-weight: 300;
+  letter-spacing: -0.03em; line-height: 1.1;
+  margin-bottom: 40px;
+}
+
+/* ── Cards grid ─────────────────────── */
+.two-col {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+}
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px; padding: 28px 32px;
+  transition: border-color .2s;
+}
+.card:hover { border-color: var(--text-3); }
+.card-tag {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px; font-weight: 500; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--text-3);
+  margin-bottom: 16px;
+}
+.card li {
+  font-size: 16px; color: var(--text-2); line-height: 1.9;
+  letter-spacing: -0.01em;
+}
+.card ul { padding-left: 16px; }
+
+/* ── Integration method ─────────────── */
+.method-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+}
+.method {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px; padding: 32px;
+  transition: border-color .2s;
+}
+.method:hover { border-color: var(--text-3); }
+.method.primary {
+  border-color: var(--cta);
+  background: rgba(243,100,88,.06);
+}
+.method.primary:hover { border-color: var(--blue); }
+.method-tag {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px; font-weight: 500; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--cta);
+  margin-bottom: 20px;
+  display: flex; align-items: center; gap: 8px;
+}
+.badge-primary {
+  background: var(--cta); color: var(--text);
+  font-size: 9px; padding: 2px 8px;
+  border-radius: 99999px; letter-spacing: .08em;
+}
+.method-title {
+  font-size: 22px; font-weight: 400;
+  letter-spacing: -0.02em; margin-bottom: 16px;
+}
+.method p {
+  font-size: 16px; color: var(--text-2); line-height: 1.8;
+  letter-spacing: -0.01em;
+}
+
+/* ── Locations header ───────────────── */
+.loc-header {
+  max-width: 1280px; margin: 0 auto;
+  padding: var(--gap) 64px 56px;
+  border-top: 1px solid var(--border-s);
+}
+
+/* ── Location row ───────────────────── */
+.loc-row {
+  max-width: 1280px; margin: 0 auto;
+  padding: 0 64px 80px;
+  display: grid;
+  grid-template-columns: 56% 1fr;
+  gap: 64px; align-items: start;
+}
+.loc-row.flip {
+  grid-template-columns: 1fr 56%;
+}
+.loc-row.flip .loc-photo { order: 2; }
+.loc-row.flip .loc-info  { order: 1; }
+
+.loc-photo {
+  overflow: hidden;
+  border-radius: 3px;
+  aspect-ratio: 4/3;
+  background: var(--surface);
+}
+.loc-photo img {
+  width: 100%; height: 100%;
+  object-fit: cover; display: block;
+  transition: transform .7s ease;
+}
+.loc-photo:hover img { transform: scale(1.04); }
+
+.loc-info { padding-top: 4px; }
+
+.loc-num {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px; font-weight: 500; letter-spacing: .14em;
+  text-transform: uppercase; color: var(--text-3);
+  margin-bottom: 24px;
+}
+.zone-chip {
+  display: inline-flex; align-items: center; gap: 0;
+  margin-bottom: 10px;
+}
+.zone-num-pill {
+  background: var(--cta); color: var(--text);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px; font-weight: 500;
+  padding: 3px 9px; border-radius: 99999px 0 0 99999px;
+  letter-spacing: .06em;
+}
+.zone-name-pill {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: none;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px; color: var(--text-2);
+  padding: 3px 10px; border-radius: 0 99999px 99999px 0;
+  letter-spacing: .06em;
+}
+.zone-chip-simple {
+  display: inline-block;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px; color: var(--text-2);
+  padding: 3px 10px; border-radius: 99999px;
+  letter-spacing: .06em;
+  margin-bottom: 10px;
+}
+.indicator-pill {
+  display: inline-block;
+  background: transparent;
+  border: 1px solid var(--border-s);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px; color: var(--text-3);
+  padding: 2px 9px; border-radius: 3px;
+  letter-spacing: .08em;
+  margin-bottom: 24px;
+  margin-left: 6px;
+}
+.loc-title {
+  font-size: 28px; font-weight: 300;
+  letter-spacing: -0.03em; line-height: 1.15;
+  margin-bottom: 18px;
+}
+.loc-desc {
+  font-size: 16px; color: var(--text-2);
+  line-height: 1.85; letter-spacing: -0.01em;
+}
+
+.loc-divider {
+  max-width: 1280px; margin: 0 auto;
+  padding: 0 64px 80px;
+}
+.loc-divider hr {
+  border: none; border-top: 1px solid var(--border-s);
+}
+
+/* ── Next steps ─────────────────────── */
+.next-steps {
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+}
+.ns-inner {
+  max-width: 1280px; margin: 0 auto;
+  padding: var(--gap) 64px;
+}
+.ns-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+}
+.ns-card {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 6px; padding: 32px;
+}
+.ns-tag {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px; font-weight: 500; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--text-3);
+  margin-bottom: 20px;
+}
+.ns-card li {
+  font-size: 16px; color: var(--text-2); line-height: 1.95;
+  letter-spacing: -0.01em;
+}
+.ns-card ul { padding-left: 16px; }
+.ns-card strong { color: var(--cta); font-weight: 500; }
+
+.note-block {
+  margin-top: 20px;
+  padding: 14px 18px;
+  background: rgba(243,100,88,.07);
+  border-left: 2px solid var(--cta);
+  border-radius: 0 3px 3px 0;
+  font-size: 16px; color: var(--text-2); line-height: 1.75;
+  letter-spacing: -0.01em;
+}
+
+/* ── Footer ─────────────────────────── */
+footer {
+  border-top: 1px solid var(--border-s);
+  padding: 32px 64px;
+  display: flex; justify-content: space-between; align-items: center;
+}
+footer span {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px; color: var(--text-3); letter-spacing: .06em;
+}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <span class="header-logo">新竹都城隍廟 · QR Code 導覽整合提案</span>
+  <span class="header-date">2026.04.27</span>
+</header>
+<div class="progress-bar" id="progress"></div>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-eyebrow">Proposal · 2026.04.27</div>
+  <h1>新竹都城隍廟<em>現場數位導覽整合提案</em></h1>
+  <p class="hero-sub">QR Code 位置規劃 &nbsp;·&nbsp; 搭配 THEOUT 無制設計 指標系統</p>
+  <p class="hero-to">Presented to THEOUT 無制設計</p>
+  <div class="hero-scroll">Scroll</div>
+</section>
+
+<!-- 合作背景 -->
+<div class="section">
+  <div class="section-meta">
+    <span class="section-tag">Background</span>
+    <div class="section-rule"></div>
+  </div>
+  <h2>合作背景</h2>
+  <div class="two-col">
+    <div class="card">
+      <div class="card-tag">現況</div>
+      <ul>
+        <li>無制設計正為新竹都城隍廟規劃完整指標系統</li>
+        <li>涵蓋參拜路線與如廁路線，共 13 個指標節點</li>
+        <li>形式涵蓋懸吊式、柱式、立式、壁式四種</li>
+        <li>覆蓋公爺殿、奶奶殿、彌勒殿、法蓮寺四區</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-tag">我們的需求</div>
+      <ul>
+        <li>在指標系統上整合 QR Code 掃描入口</li>
+        <li>訪客掃描後進入現場數位導覽網站</li>
+        <li>實體指標引路，數位內容深化參拜體驗</li>
+        <li>各殿宇節點提供對應的導覽資訊</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- 整合方式 -->
+<div class="section" style="padding-top:0">
+  <div class="section-meta">
+    <span class="section-tag">Integration</span>
+    <div class="section-rule"></div>
+  </div>
+  <h2>QR Code 整合方式</h2>
+  <div class="method-grid">
+    <div class="method primary">
+      <div class="method-tag">
+        首選方案
+        <span class="badge-primary">Preferred</span>
+      </div>
+      <div class="method-title">整合進指標牌</div>
+      <p>請無制設計在指標設計中預留 QR Code 區域，使數位導覽入口成為指標的一部分。視覺語言一致，體驗流暢不中斷。</p>
+    </div>
+    <div class="method">
+      <div class="method-tag" style="color:var(--text-3)">備選方案</div>
+      <div class="method-title">獨立 QR Code 立牌</div>
+      <p>若無法整合於指標牌，則另行委託製作獨立立牌，依現場勘查照片確認的位置擺放，搭配無制設計的指標節點。</p>
+    </div>
+  </div>
+</div>
+
+<!-- Locations -->
+<div class="loc-header">
+  <div class="section-meta">
+    <span class="section-tag">QR Code Locations</span>
+    <div class="section-rule"></div>
+  </div>
+  <h2>建議 QR Code 位置 &nbsp;<span style="color:var(--text-3);font-weight:300;">· 共 6 處</span></h2>
+</div>
+
+<!-- 01 廟前廣場 -->
+<div class="loc-row">
+  <div class="loc-photo"><img src="loc01_廟前廣場.jpg" alt="廟前廣場"></div>
+  <div class="loc-info">
+    <div class="loc-num">Location — 01</div>
+    <div>
+      <div class="zone-chip">
+        <span class="zone-num-pill">1</span>
+        <span class="zone-name-pill">公爺殿・正入門</span>
+      </div>
+      <span class="indicator-pill">B0</span>
+    </div>
+    <div class="loc-title">廟前廣場</div>
+    <p class="loc-desc">廟宇正入門處，人流最密集的核心區域。立式指標整合 QR Code，提供廟宇全區地圖與完整參拜流程說明，作為導覽的主要入口。</p>
+  </div>
+</div>
+<div class="loc-divider"><hr></div>
+
+<!-- 02 廟宇入口 -->
+<div class="loc-row flip">
+  <div class="loc-photo"><img src="loc02入口.png" alt="廟宇正面入口"></div>
+  <div class="loc-info">
+    <div class="loc-num">Location — 02</div>
+    <div>
+      <div class="zone-chip">
+        <span class="zone-num-pill">1</span>
+        <span class="zone-name-pill">入口・中央通廊</span>
+      </div>
+      <span class="indicator-pill">A + W1</span>
+    </div>
+    <div class="loc-title">廟宇正面入口</div>
+    <p class="loc-desc">中央通廊左側門框旁，訪客進入廟宇的第一接觸點。QR Code 提供全場導覽起點說明、參拜流程總覽，以及化妝室方向指引。</p>
+  </div>
+</div>
+<div class="loc-divider"><hr></div>
+
+<!-- 03 點香處 -->
+<div class="loc-row">
+  <div class="loc-photo"><img src="loc03_點香處.jpg" alt="公爺殿點香處"></div>
+  <div class="loc-info">
+    <div class="loc-num">Location — 03</div>
+    <div>
+      <div class="zone-chip">
+        <span class="zone-num-pill">1</span>
+        <span class="zone-name-pill">公爺殿・點香處</span>
+      </div>
+      <span class="indicator-pill">B1</span>
+    </div>
+    <div class="loc-title">公爺殿・點香區</div>
+    <p class="loc-desc">廟宇中央點香區，參拜動線核心節點。中間主柱上整合 QR Code，連結點香禮儀說明、城隍爺神明介紹，以及香爐使用說明。</p>
+  </div>
+</div>
+<div class="loc-divider"><hr></div>
+
+<!-- 04 奶奶殿 -->
+<div class="loc-row flip">
+  <div class="loc-photo"><img src="loc04_奶奶殿.JPG" alt="奶奶殿側門"></div>
+  <div class="loc-info">
+    <div class="loc-num">Location — 04</div>
+    <div>
+      <div class="zone-chip">
+        <span class="zone-num-pill">2</span>
+        <span class="zone-name-pill">奶奶殿・側門入口</span>
+      </div>
+      <span class="indicator-pill">C</span>
+    </div>
+    <div class="loc-title">奶奶殿・側門</div>
+    <p class="loc-desc">廟宇外側小門，連接奶奶殿的分流點。拱門右側紅板旁整合 QR Code，提供奶奶殿說明與參拜路線圖。</p>
+  </div>
+</div>
+<div class="loc-divider"><hr></div>
+
+<!-- 05 彌勒殿 -->
+<div class="loc-row">
+  <div class="loc-photo"><img src="loc05_彌勒殿.JPG" alt="彌勒殿太歲入口"></div>
+  <div class="loc-info">
+    <div class="loc-num">Location — 05</div>
+    <div>
+      <div class="zone-chip">
+        <span class="zone-num-pill">3</span>
+        <span class="zone-name-pill">彌勒殿・太歲方向</span>
+      </div>
+      <span class="indicator-pill">E + W3</span>
+    </div>
+    <div class="loc-title">彌勒殿・太歲入口</div>
+    <p class="loc-desc">通往彌勒殿、太歲殿的入口。右門左邊框木柱上整合 QR Code，提供彌勒殿介紹、太歲安奉說明，以及前往金爐的方向指引。</p>
+  </div>
+</div>
+<div class="loc-divider"><hr></div>
+
+<!-- 06 法蓮寺 -->
+<div class="loc-row flip">
+  <div class="loc-photo"><img src="loc06_法蓮寺.png" alt="法蓮寺紅門"></div>
+  <div class="loc-info">
+    <div class="loc-num">Location — 06</div>
+    <div>
+      <div class="zone-chip">
+        <span class="zone-num-pill">4</span>
+        <span class="zone-name-pill">法蓮寺・紅門通道</span>
+      </div>
+      <span class="indicator-pill">F + W6</span>
+    </div>
+    <div class="loc-title">法蓮寺・紅門</div>
+    <p class="loc-desc">法蓮寺出口與如廁路線交匯處。紅門左牆或右牆可挑一處放置 QR Code，提供法蓮寺（佛祖殿）介紹、出口指引，以及化妝室方向說明。</p>
+  </div>
+</div>
+
+<!-- 總覽地圖 -->
+<div class="loc-divider"><hr></div>
+<div class="section" style="padding-top:80px;">
+  <div class="section-meta">
+    <span class="section-tag">Overview Map</span>
+    <div class="section-rule"></div>
+  </div>
+  <h2>6 處 QR Code 位置總覽</h2>
+  <img src="qrcode位置圖.png" alt="QR Code 位置總覽"
+       style="width:100%;max-width:780px;display:block;border:1px solid #353535;border-radius:3px;">
+</div>
+
+<!-- Next steps -->
+<section class="next-steps">
+  <div class="ns-inner">
+    <div class="section-meta">
+      <span class="section-tag">Next Steps</span>
+      <div class="section-rule"></div>
+    </div>
+    <h2>討論事項</h2>
+    <div class="ns-grid">
+      <div class="ns-card">
+        <div class="ns-tag">請無制設計確認</div>
+        <ul>
+          <li>各指標牌是否可預留 QR Code 空間</li>
+          <li>建議尺寸：<strong>4 × 4 cm</strong>，附簡短說明文字</li>
+          <li>若無法整合，是否可協助規格建議</li>
+          <li>以利我方另行委製獨立立牌</li>
+        </ul>
+        <div class="note-block">
+          廟內香火鼎盛、人潮密集，採光條件不穩定。<br>
+          <strong>4 × 4 cm</strong> 可確保不同光線下的掃碼成功率；<br>
+          建議搭配深底淺碼（高對比）提升辨識度。
+        </div>
+      </div>
+      <div class="ns-card">
+        <div class="ns-tag">我方後續</div>
+        <ul>
+          <li>確認最終 QR Code 點位（共 6 處）</li>
+          <li>開始製作數位導覽網站第一階段</li>
+          <li>完成後提供各點正式 QR Code 檔案</li>
+          <li>配合指標製作時程同步進行</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span>新竹都城隍廟 現場數位導覽整合提案</span>
+  <span>2026.04.27 · THEOUT 無制設計</span>
+</footer>
+
+<script>
+window.addEventListener('scroll', () => {
+  const h = document.documentElement;
+  const pct = h.scrollTop / (h.scrollHeight - h.clientHeight) * 100;
+  document.getElementById('progress').style.width = pct + '%';
+});
+</script>
+</body>
+</html>
