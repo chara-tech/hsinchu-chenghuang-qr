@@ -347,6 +347,61 @@ footer {
   padding: 32px 64px;
   display: flex; justify-content: space-between; align-items: center;
 }
+
+/* ── RWD ─────────────────────────────── */
+@media (max-width: 768px) {
+  :root { --gap: 56px; }
+
+  .header { padding: 0 20px; }
+  .header-logo { font-size: 10px; letter-spacing: .02em; }
+
+  .hero {
+    padding: 80px 20px 56px;
+    min-height: 100svh;
+  }
+  .hero h1 { font-size: clamp(32px, 9vw, 52px); letter-spacing: -0.02em; }
+  .hero-sub { font-size: 15px; margin-top: 24px; }
+  .hero-scroll { margin-top: 32px; }
+
+  .section { padding: var(--gap) 20px; }
+  .section + .section { padding-top: 0; }
+
+  .two-col    { grid-template-columns: 1fr; }
+  .method-grid { grid-template-columns: 1fr; }
+  .method.premise { grid-column: auto; }
+  .ns-grid    { grid-template-columns: 1fr; }
+
+  .loc-header { padding: var(--gap) 20px 40px; }
+  .loc-divider { padding: 0 20px 56px; }
+
+  .loc-row,
+  .loc-row.flip {
+    grid-template-columns: 1fr;
+    gap: 24px;
+    padding: 0 20px 56px;
+  }
+  .loc-row.flip .loc-photo,
+  .loc-row.flip .loc-info  { order: unset; }
+
+  .loc-photo { aspect-ratio: 16/10; }
+  .loc-num   { margin-bottom: 16px; }
+  .loc-title { font-size: 22px; }
+
+  .ns-inner { padding: var(--gap) 20px; }
+
+  footer {
+    flex-direction: column;
+    gap: 6px; text-align: center;
+    padding: 24px 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero h1 { font-size: clamp(28px, 8vw, 40px); }
+  h2 { font-size: clamp(22px, 6vw, 30px); }
+  .method-title { font-size: 18px; }
+  .loc-title { font-size: 20px; }
+}
 footer span {
   font-family: 'IBM Plex Mono', monospace;
   font-size: 11px; color: var(--text-3); letter-spacing: .06em;
