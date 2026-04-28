@@ -11,14 +11,14 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --bg:       #0b0b0b;
-  --surface:  #212121;
-  --border:   #353535;
-  --border-s: #212121;
-  --text:     #ffffff;
-  --text-2:   #b9b9b9;
-  --text-3:   #797979;
-  --cta:      #f36458;
+  --bg:       #EBEBEB;
+  --surface:  #FFFFFF;
+  --border:   #CFCBC6;
+  --border-s: #E2DFDA;
+  --text:     #1C1A18;
+  --text-2:   #514E4A;
+  --text-3:   #8C8884;
+  --cta:      #C8783A;
   --blue:     #0052ef;
   --gap:      96px;
 }
@@ -39,7 +39,7 @@ body {
   height: 44px;
   display: flex; align-items: center; justify-content: space-between;
   padding: 0 32px;
-  background: rgba(11,11,11,.88);
+  background: rgba(235,235,235,.92);
   backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--border-s);
 }
@@ -169,10 +169,13 @@ h2 {
 }
 .method:hover { border-color: var(--text-3); }
 .method.primary {
+  background: var(--cta);
   border-color: var(--cta);
-  background: rgba(243,100,88,.06);
 }
-.method.primary:hover { border-color: var(--blue); }
+.method.primary:hover { background: #B56A2E; border-color: #B56A2E; }
+.method.primary .method-tag  { color: rgba(255,255,255,.75); }
+.method.primary .method-title { color: #ffffff; }
+.method.primary p             { color: rgba(255,255,255,.88); }
 .method-tag {
   font-family: 'IBM Plex Mono', monospace;
   font-size: 10px; font-weight: 500; letter-spacing: .12em;
@@ -181,7 +184,7 @@ h2 {
   display: flex; align-items: center; gap: 8px;
 }
 .badge-primary {
-  background: var(--cta); color: var(--text);
+  background: rgba(255,255,255,.25); color: #ffffff;
   font-size: 9px; padding: 2px 8px;
   border-radius: 99999px; letter-spacing: .08em;
 }
@@ -241,7 +244,7 @@ h2 {
   margin-bottom: 10px;
 }
 .zone-num-pill {
-  background: var(--cta); color: var(--text);
+  background: var(--cta); color: #ffffff;
   font-family: 'IBM Plex Mono', monospace;
   font-size: 10px; font-weight: 500;
   padding: 3px 9px; border-radius: 99999px 0 0 99999px;
@@ -328,7 +331,7 @@ h2 {
 .note-block {
   margin-top: 20px;
   padding: 14px 18px;
-  background: rgba(243,100,88,.07);
+  background: rgba(200,120,58,.08);
   border-left: 2px solid var(--cta);
   border-radius: 0 3px 3px 0;
   font-size: 16px; color: var(--text-2); line-height: 1.75;
@@ -351,16 +354,16 @@ footer span {
 
 <header class="header">
   <span class="header-logo">新竹都城隍廟 · QR Code 導覽整合提案</span>
-  <span class="header-date">2026.04.27</span>
+  <span class="header-date">2026.04.28</span>
 </header>
 <div class="progress-bar" id="progress"></div>
 
 <!-- Hero -->
 <section class="hero">
-  <div class="hero-eyebrow">Proposal · 2026.04.27</div>
+  <div class="hero-eyebrow">Proposal · 2026.04.28</div>
   <h1>新竹都城隍廟<em>現場數位導覽整合提案</em></h1>
   <p class="hero-sub">QR Code 位置規劃 &nbsp;·&nbsp; 搭配 THEOUT 無制設計 指標系統</p>
-  <p class="hero-to">Presented to THEOUT 無制設計</p>
+
   <div class="hero-scroll">Scroll</div>
 </section>
 
@@ -376,9 +379,9 @@ footer span {
       <div class="card-tag">現況</div>
       <ul>
         <li>無制設計正為新竹都城隍廟規劃完整指標系統</li>
-        <li>涵蓋參拜路線與如廁路線，共 13 個指標節點</li>
+        <li>涵蓋參拜路線與如廁路線，共 15 個指標節點</li>
         <li>形式涵蓋懸吊式、柱式、立式、壁式四種</li>
-        <li>覆蓋公爺殿、奶奶殿、彌勒殿、法蓮寺四區</li>
+        <li>覆蓋公爺殿、奶奶殿、彌勒殿三區</li>
       </ul>
     </div>
     <div class="card">
@@ -511,7 +514,7 @@ footer span {
       <span class="indicator-pill">E + W3</span>
     </div>
     <div class="loc-title">彌勒殿・太歲入口</div>
-    <p class="loc-desc">通往彌勒殿、太歲殿的入口。右門左邊框木柱上整合 QR Code，提供彌勒殿介紹、太歲安奉說明，以及前往金爐的方向指引。</p>
+    <p class="loc-desc">通往彌勒殿、太歲殿的入口。大門入口左方整合 QR Code，提供彌勒殿介紹、太歲安奉說明，以及前往金爐的方向指引。</p>
   </div>
 </div>
 <div class="loc-divider"><hr></div>
@@ -529,7 +532,7 @@ footer span {
       <span class="indicator-pill">F + W6</span>
     </div>
     <div class="loc-title">法蓮寺・紅門</div>
-    <p class="loc-desc">法蓮寺出口與如廁路線交匯處。紅門左牆或右牆可挑一處放置 QR Code，提供法蓮寺（佛祖殿）介紹、出口指引，以及化妝室方向說明。</p>
+    <p class="loc-desc">法蓮寺出口與如廁路線交匯處。紅門左牆或右牆可挑一處放置 QR Code，提供法蓮寺（佛祖殿）介紹說明。</p>
   </div>
 </div>
 
@@ -541,7 +544,7 @@ footer span {
     <div class="section-rule"></div>
   </div>
   <h2>6 處 QR Code 位置總覽</h2>
-  <img src="qrcode位置圖.png" alt="QR Code 位置總覽"
+  <img src="可標注.png" alt="QR Code 位置總覽"
        style="width:100%;max-width:780px;display:block;border:1px solid #353535;border-radius:3px;">
 </div>
 
@@ -558,13 +561,13 @@ footer span {
         <div class="ns-tag">請無制設計確認</div>
         <ul>
           <li>各指標牌是否可預留 QR Code 空間</li>
-          <li>建議尺寸：<strong>4 × 4 cm</strong>，附簡短說明文字</li>
+          <li>建議尺寸：<strong>10 × 10 cm</strong>，附簡短說明文字</li>
           <li>若無法整合，是否可協助規格建議</li>
           <li>以利我方另行委製獨立立牌</li>
         </ul>
         <div class="note-block">
           廟內香火鼎盛、人潮密集，採光條件不穩定。<br>
-          <strong>4 × 4 cm</strong> 可確保不同光線下的掃碼成功率；<br>
+          <strong>10 × 10 cm</strong> 可確保不同光線下的掃碼成功率；<br>
           建議搭配深底淺碼（高對比）提升辨識度。
         </div>
       </div>
@@ -583,7 +586,7 @@ footer span {
 
 <footer>
   <span>新竹都城隍廟 現場數位導覽整合提案</span>
-  <span>2026.04.27 · THEOUT 無制設計</span>
+  <span>2026.04.28 · THEOUT 無制設計</span>
 </footer>
 
 <script>
