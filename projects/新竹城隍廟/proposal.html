@@ -161,6 +161,9 @@ h2 {
 .method-grid {
   display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
 }
+.method.premise {
+  grid-column: 1 / -1;
+}
 .method {
   background: var(--surface);
   border: 1px solid var(--border);
@@ -404,19 +407,27 @@ footer span {
   </div>
   <h2>QR Code 整合方式</h2>
   <div class="method-grid">
+
+    <div class="method premise">
+      <div class="method-title">整合現有 W / B 指標</div>
+      <p>在無制設計現有的 W（如廁路線）與 B（參拜路線）指標牌上預留 QR Code 空間，以最小改動讓數位導覽融入既有系統。</p>
+    </div>
+
     <div class="method primary">
       <div class="method-tag">
-        首選方案
-        <span class="badge-primary">Preferred</span>
+        方案一
+        <span class="badge-primary">建議</span>
       </div>
-      <div class="method-title">整合進指標牌</div>
-      <p>請無制設計在指標設計中預留 QR Code 區域，使數位導覽入口成為指標的一部分。視覺語言一致，體驗流暢不中斷。</p>
+      <div class="method-title">新增 P 標誌</div>
+      <p>請無制設計另行規劃一套 P（導覽點）專用標誌，設置於各殿宇入口（如奶奶殿、公爺殿），讓訪客掃描獲得該區域的空間導覽內容。</p>
     </div>
+
     <div class="method">
-      <div class="method-tag" style="color:var(--text-3)">備選方案</div>
+      <div class="method-tag" style="color:var(--text-3)">方案二</div>
       <div class="method-title">獨立 QR Code 立牌</div>
-      <p>若無法整合於指標牌，則另行委託製作獨立立牌，依現場勘查照片確認的位置擺放，搭配無制設計的指標節點。</p>
+      <p>若前述方案不可行，另行委製獨立立牌，依現場勘查照片確認的位置擺放，搭配無制設計的指標節點。</p>
     </div>
+
   </div>
 </div>
 
